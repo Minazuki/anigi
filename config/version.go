@@ -1,4 +1,4 @@
-package config
+﻿package config
 
 // Version of anigi
-const Version = "2025.07.25.1843"
+const Version = "2025.07.25.2036"
