@@ -66,7 +66,7 @@ func main() {
 		fmt.Printf("初始化 anigi 時發生錯誤： %v \n", err)
 		return
 	}
-	fmt.Printf("anigi 初始化完成，開始運行... %v \n", a)
+	fmt.Printf("anigi 初始化完成，開始運行... \n")
 	a.Run()
 	cancel()
 	fmt.Printf("anigi 已經結束運行。 大家掰掰 \n")

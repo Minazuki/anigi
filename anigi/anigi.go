@@ -203,5 +203,5 @@ func percentToPace(percent float64) float64 {
 		outPace = 1.0 - ((percent-50)/50.0)
 	}
 	// guard 0.01 to 2.0
-	return clamp(outPace, 0.01, 2.0)
+	return clamp(outPace, 0.02, 2.0)
 }
