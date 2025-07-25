@@ -7,6 +7,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"syscall"
 
 	"github.com/spf13/viper"
 )
@@ -21,6 +22,14 @@ type Config struct {
 }
 
 func main() {
+	getWin := syscall.NewLazyDLL("user32.dll").NewProc("GetConsoleWindow")
+	showWin := syscall.NewLazyDLL("user32.dll").NewProc("ShowWindow")
+	if getWin.Find() == nil && showWin.Find() == nil {
+		hwnd, _, _ := getWin.Call()
+		if hwnd != 0 {
+			showWin.Call(hwnd, 0) // SW_HIDE
+		}
+	}
 	for _, arg := range os.Args[1:] {
 		if arg == "-help" || arg == "--help" || arg == "help" {
 			fmt.Println("使用說明：")

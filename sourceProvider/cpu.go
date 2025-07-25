@@ -11,6 +11,7 @@ import (
 
 type CPUProvider struct {
 	valueChan chan float64
+	percentBuff []float64
 }
 
 func (c *CPUProvider) Name() string {
@@ -18,6 +19,24 @@ func (c *CPUProvider) Name() string {
 }
 func (p *CPUProvider) ValueChan() <-chan float64 {
 	return p.valueChan
+}
+
+func (c *CPUProvider) addPercent(percent float64) {
+	c.percentBuff = append(c.percentBuff, percent)
+	if len(c.percentBuff) > 10 {
+		c.percentBuff = c.percentBuff[1:]
+	}
+}
+
+func (c *CPUProvider) getPercent() float64 {
+	if len(c.percentBuff) == 0 {
+		return 0.0
+	}
+	sum := 0.0
+	for _, percent := range c.percentBuff {
+		sum += percent
+	}
+	return sum / float64(len(c.percentBuff))
 }
 
 // NewCPUProvider creates a new CPUProvider instance.
@@ -29,17 +48,24 @@ func NewCPUPercentProvider(ctx context.Context, interval time.Duration) *CPUProv
 
 	go func() {
 		ticker := time.NewTicker(interval)
+		update := time.NewTicker(100 * time.Millisecond)
+		defer ticker.Stop()
+		defer update.Stop()
 		for {
 			select {
 			case <-ctx.Done():
 				return
-			case <-ticker.C:
-				// 不準確 先這樣 有空再重寫
-				percent, err := cpu.Percent(time.Second, false)
+			case <-update.C:
+				percent, err := cpu.Percent(100 * time.Millisecond, false)				
 				if err != nil {
 					continue
 				}
-				c.valueChan <- percent[0]
+				c.addPercent(percent[0])
+
+			case <-ticker.C:
+				// 不準確 先這樣 有空再重寫
+				usage := c.getPercent()
+				c.valueChan <- usage
 			}
 		}
 	}()
