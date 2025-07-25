@@ -3,6 +3,7 @@ package main
 import (
 	"anigi/anigi"
 	"anigi/config"
+	"context"
 	"flag"
 	"fmt"
 	"os"
@@ -58,14 +59,16 @@ func main() {
 
 	fmt.Printf("config: %v \n", jc)
 
-	a , err:= anigi.NewAnigi(jc.Anigi)
+	ctx, cancel := context.WithCancel(context.Background())
+
+	a , err:= anigi.NewAnigi(ctx,jc.Anigi)
 	if err != nil {
 		fmt.Printf("初始化 anigi 時發生錯誤： %v \n", err)
 		return
 	}
 	fmt.Printf("anigi 初始化完成，開始運行... %v \n", a)
 	a.Run()
-	fmt.Printf("anigi 已經結束運行。 \n")
-
+	cancel()
+	fmt.Printf("anigi 已經結束運行。 大家掰掰 \n")
 
 }

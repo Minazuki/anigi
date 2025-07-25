@@ -7,7 +7,7 @@
             "request": "launch",
             "mode": "auto",
             "program": "${workspaceFolder}",
-            "cwd": "${workspaceFolder}/bin/Debug",
+            "cwd": "${workspaceFolder}",
             "env": {},
             "args": [
                 "-d",
