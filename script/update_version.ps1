@@ -17,7 +17,7 @@ $now = Get-Date -Format "yyyy.MM.dd.HHmm"
 $content = @"
 package config
 
-// Version of gifToIcon
+// Version of anigi
 const Version = "$now"
 "@
 
