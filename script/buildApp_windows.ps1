@@ -75,7 +75,6 @@ if ($outputZip -eq "t") {
     Write-YellowToConsole "正在打包 zip..."
     # 複製 example\config.json 到 bin 目錄，確保壓縮時在根目錄
     $configSrc = Join-Path $projectRoot "example\config.json"
-    $configSrc = Join-Path $projectRoot "example\runAnigi.bat"
     $configDst = Join-Path $binDir "config.json"
     if (Test-Path $configSrc) {
         Copy-Item $configSrc -Destination $configDst -Force
