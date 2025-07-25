@@ -1,4 +1,4 @@
 package config
 
-// Version of anigi
-const Version = "2025.07.23.1719"
+// Version of gifToIcon
+const Version = "2025.07.25.1523"

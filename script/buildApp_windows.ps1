@@ -73,7 +73,16 @@ if ($outputZip -eq "t") {
     $zipPath = Join-Path $distDir $zipName
 
     Write-YellowToConsole "正在打包 zip..."
-    Compress-Archive -Path $exePath, $md5Path -DestinationPath $zipPath -Force
+    # 複製 example\config.json 到 bin 目錄，確保壓縮時在根目錄
+    $configSrc = Join-Path $projectRoot "example\config.json"
+    $configDst = Join-Path $binDir "config.json"
+    if (Test-Path $configSrc) {
+        Copy-Item $configSrc -Destination $configDst -Force
+    }
+    Compress-Archive -Path $exePath, $md5Path, $configDst -DestinationPath $zipPath -Force
+    if (Test-Path $configDst) {
+        Remove-Item $configDst
+    }
     Write-YellowToConsole "已完成打包：$zipPath"
 
 }
