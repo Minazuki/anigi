@@ -7,29 +7,20 @@ import (
 	"flag"
 	"fmt"
 	"os"
-	"syscall"
 
 	"github.com/spf13/viper"
 )
 
 var (
-	workDir      = flag.String("d", ".", "工作目錄")
-	showVersion  = flag.Bool("v", false, "顯示版本號")
+	workDir     = flag.String("d", ".", "工作目錄")
+	showVersion = flag.Bool("v", false, "顯示版本號")
 )
 
 type Config struct {
-    Anigi config.AnigiCfg `json:"anigi"`
+	Anigi config.AnigiCfg `json:"anigi"`
 }
 
 func main() {
-	getWin := syscall.NewLazyDLL("user32.dll").NewProc("GetConsoleWindow")
-	showWin := syscall.NewLazyDLL("user32.dll").NewProc("ShowWindow")
-	if getWin.Find() == nil && showWin.Find() == nil {
-		hwnd, _, _ := getWin.Call()
-		if hwnd != 0 {
-			showWin.Call(hwnd, 0) // SW_HIDE
-		}
-	}
 	for _, arg := range os.Args[1:] {
 		if arg == "-help" || arg == "--help" || arg == "help" {
 			fmt.Println("使用說明：")
@@ -70,7 +61,7 @@ func main() {
 
 	ctx, cancel := context.WithCancel(context.Background())
 
-	a , err:= anigi.NewAnigi(ctx,jc.Anigi)
+	a, err := anigi.NewAnigi(ctx, jc.Anigi)
 	if err != nil {
 		fmt.Printf("初始化 anigi 時發生錯誤： %v \n", err)
 		return
