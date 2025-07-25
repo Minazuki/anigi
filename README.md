@@ -1,6 +1,5 @@
-# 配置
-請參考  
-.vscode_templet  
+  
+![demo](./image/demo.gif)
 
 # 使用
 ```
@@ -59,6 +58,10 @@ mem: 你的記憶體使用量
 
 程式本體沒有上鎖 你可以複製多個配合不同圖片資料啟動
 ```
+
+# 配置
+請參考  
+.vscode_templet  
 
 # build script  
 debug  
